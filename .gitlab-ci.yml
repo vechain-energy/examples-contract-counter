@@ -1,0 +1,25 @@
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  image: node:14
+  stage: test
+  script:
+    - yarn install
+    - yarn lint
+    - yarn test
+
+pages:
+  stage: deploy
+  script:
+    - mv docs public
+  environment:
+    name: "Documentation"
+    url: $CI_PAGES_URL
+  artifacts:
+    paths:
+    - public
+  only:
+    - master
